@@ -128,4 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-original_code/
+/original_code
