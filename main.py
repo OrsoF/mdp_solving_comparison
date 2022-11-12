@@ -7,7 +7,7 @@ from solvers.__init__ import solver_list, get_solver
 env_dim, solver_dim = len(envs_list), len(solver_list)
 results = np.zeros((env_dim, solver_dim, 2))
 
-n_exp = 100
+n_exp = 2
 
 for i_env, env_name in enumerate(envs_list):
     for i_solver, solver_name in enumerate(solver_list):
@@ -17,8 +17,6 @@ for i_env, env_name in enumerate(envs_list):
             results[i_env, i_solver] += solver.building_time, solver.runtime
 
 results = results/n_exp
-
-print(results)
 
 import pandas as pd
 
