@@ -1,0 +1,4 @@
+numpy
+mdptoolbox
+gurobipy
+pandas
