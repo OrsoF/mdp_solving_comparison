@@ -1,36 +1,40 @@
-from solvers.pyMarmoteMDP import marmoteInterval, sparseMatrixVector, sparseMatrix, discountedMDP
+from solvers.pyMarmoteMDP import marmoteInterval, sparseMatrix, totalRewardMDP
 
 class MarmoteSolver:
     def __init__(self, env, epsi=0.0001, max_iter=1000, method = 'value_iteration'):
+        print('Building MDP...')
+        # Paramètres
         self.env = env
         self.gamma = self.env.gamma
-        self.action_space = marmoteInterval(0, self.env.S-1)
-        self.state_space = marmoteInterval(0, self.env.A-1)
-        self.transition_matrix = sparseMatrixVector(self.env.A)
 
-        for action in range(self.env.A):
-            P = sparseMatrix(self.env.S, self.env.S)
+        self.state_space = marmoteInterval(0, self.env.S-1)
+        self.action_space = marmoteInterval(0, self.env.A-1)
+        self.S = self.state_space.cardinal()
+        self.A = self.action_space.cardinal()
+
+        self.reward_matrix = sparseMatrix(self.S, self.A)
+
+        for a in range(self.env.A):
+            for s in range(self.env.S):
+                self.reward_matrix.addToEntry(s, a, self.env.R[s, a])
+
+        print('Building MDP...')
+        self.mdp = totalRewardMDP('min', self.state_space, self.action_space, self.reward_matrix) 
+
+        self.transitions_list = list()
+
+        print('Transition matrix...')
+        for a in range(self.env.A):
+            P = sparseMatrix(self.S)
             for s1 in range(self.env.S):
-                transitions = self.env.P[action, s1]
-                for s2, proba in enumerate(transitions):
-                    P.addToEntry(s1, s2, proba)
-            self.transition_matrix[action] = P
+                for s2 in range(self.env.S):
+                    if self.env.P[a, s, s] > 0.:
+                        P.addToEntry(s, s, self.env.P[a, s, s])
+            self.mdp.addMatrix(a, P)
+            self.transitions_list.append(P)
+            P = None
 
-        self.reward_matrix = sparseMatrix(self.env.S, self.env.A)
-        for s in range(self.env.S):
-            for a in range(self.env.A):
-                reward = self.env.R[s, a]
-                self.reward_matrix.addToEntry(s, a, reward)
+        self.mdp.writeMDP()
 
-        self.model = discountedMDP('max', 
-                                   self.state_space, 
-                                   self.action_space, 
-                                   self.transition_matrix, 
-                                   self.reward_matrix, 
-                                   self.gamma)
-
-        if method == 'value_iteration':
-            self.optimum = self.model.valueIteration(epsi, max_iter)
-        elif method == 'policy_iteration':
-            self.model.policyIterationModified(epsi, max_iter, self.gamma, max_iter)
-            print('ok')
+        self.opt = self.mdp.valueIteration(epsi, max_iter)
+        self.opt.writeSolution()
