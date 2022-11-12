@@ -1,8 +1,13 @@
 from gurobipy import Model, LinExpr, GRB
 
-class GurobiSolver:
-    def __init__(self, env):
+from time import thread_time
+
+class Solver:
+    def __init__(self, env, method='value_iteration'):
         self.env = env
+
+        start_time = thread_time()
+
         self.model = Model("MDP")
         self.model.setParam('OutputFlag', 0)
         self.var = []
@@ -25,10 +30,8 @@ class GurobiSolver:
                     total = total + self.env.gamma*self.env.P[j][i,k]*self.var[k]
                 self.model.addConstr( self.var[i] >= self.env.R[i,j] + total, "Contrainte%d" % i)
 
+        self.building_time = thread_time()-start_time
+
         self.model.optimize()
 
-        def show_solution(self):
-            print("")                
-            print('Solution optimale:')
-            for i in range(self.env.S):
-                    print('v%d'%(i+1), '=', self.var[i])
+        self.runtime = self.model.Runtime

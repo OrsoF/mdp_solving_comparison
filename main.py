@@ -1,8 +1,10 @@
-from environments.example import mdp_env
+from environments.__init__ import envs_list, make_env
 
-env = mdp_env()
+env_name = envs_list[-1]
 
-from solvers.marmote import MarmoteSolver
+env = make_env(env_name)(100, 1000)
 
-solver = MarmoteSolver(env)
-print('Done')
+from solvers.mdptoolbox_method import Solver
+
+solver = Solver(env)
+print(solver.building_time, solver.runtime)

@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 
 original_code/
+environments/__pycache__/
+solvers/__pycache__/
