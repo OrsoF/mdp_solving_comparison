@@ -1,4 +1,4 @@
-from mdptoolbox.mdp import ValueIteration, PolicyIterationModified
+from mdptoolbox.mdp import ValueIterationGS, PolicyIterationModified
 from time import thread_time
 
 class Solver:
@@ -7,7 +7,7 @@ class Solver:
 
         if method == 'value_iteration':
             start_time = thread_time()
-            self.model = ValueIteration(self.env.P, self.env.R, self.env.gamma)
+            self.model = ValueIterationGS(self.env.P, self.env.R, self.env.gamma, 0.01, 100)
         else:
             start_time = thread_time()
             self.model = PolicyIterationModified(self.env.P, self.env.R, self.env.gamma)

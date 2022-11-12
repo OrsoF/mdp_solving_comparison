@@ -1,10 +1,57 @@
+import numpy as np
+import sys
+
 from environments.__init__ import envs_list, make_env
+from solvers.__init__ import solver_list, get_solver
 
-env_name = envs_list[-1]
+env_dim, solver_dim = len(envs_list), len(solver_list)
+results = np.zeros((env_dim, solver_dim, 2))
 
-env = make_env(env_name)(100, 1000)
+n_exp = 100
 
-from solvers.mdptoolbox_method import Solver
+for i_env, env_name in enumerate(envs_list):
+    for i_solver, solver_name in enumerate(solver_list):
+        for _ in range(n_exp):
+            env = make_env(env_name)()
+            solver = get_solver(solver_name)(env)
+            results[i_env, i_solver] += solver.building_time, solver.runtime
 
-solver = Solver(env)
-print(solver.building_time, solver.runtime)
+results = results/n_exp
+
+print(results)
+
+import pandas as pd
+
+table_dict_build = {}
+table_dict_build['Env'] = [elem[13:] for elem in envs_list]
+for i_solver, solver in enumerate(solver_list):
+    table_dict_build[solver[8:]] = results[:, i_solver, 0]
+res_df_build = pd.DataFrame(table_dict_build)
+
+table_dict_solve = {}
+table_dict_solve['Env'] = [elem[13:] for elem in envs_list]
+for i_solver, solver in enumerate(solver_list):
+    table_dict_solve[solver[8:]] = results[:, i_solver, 1]
+res_df_solve = pd.DataFrame(table_dict_solve)
+
+
+print()
+print('On {} steps,'.format(n_exp))
+print()
+print('Average building times :')
+print()
+print(res_df_build)
+
+print()
+print('Average solving times :')
+print()
+print(res_df_solve)
+
+# Debug
+
+# from solvers.gurobi import Solver
+# from environments.taxi import MdpEnv
+
+# env = MdpEnv()
+# print(env)
+# solver = Solver(env)

@@ -1,6 +1,6 @@
 import numpy as np
 
-class mdp_env:
+class MdpEnv:
     def __init__(self) -> None:
 
         self.P = np.array((((0,0.875,0.0625,0.0625),(0,0.75,0,0.25 ),(0,0,0.5,0.5),(0,0,0,1)), 

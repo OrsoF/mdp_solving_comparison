@@ -1,7 +1,7 @@
 import numpy as np
 from mdptoolbox.util import check
 
-class mdp_env:
+class MdpEnv:
     def __init__(self, S=10, A=10) -> None:
         self.S, self.A = S, A
         self.P = np.random.random(size=(A, S, S))

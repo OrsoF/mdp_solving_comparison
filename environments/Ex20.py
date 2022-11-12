@@ -1,6 +1,6 @@
 import numpy as np
 
-class mdp_env:
+class MdpEnv:
     def __init__(self) -> None:
         self.P = np.zeros((4, 3, 3))
         self.P[0, 0, 2] = 1

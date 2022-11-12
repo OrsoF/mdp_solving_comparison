@@ -22,7 +22,7 @@ def build_R_frozen_lake(A, S):
                 R[s,a] = R[s,a] + tup[2]
     return R
 
-class mdp_env:
+class MdpEnv:
     def __init__(self) -> None:
         self.S = gym_env.observation_space.n
         self.A = gym_env.action_space.n

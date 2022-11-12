@@ -1,6 +1,6 @@
 import numpy as np
 
-class mdp_env:
+class MdpEnv:
     def __init__(self) -> None:
         self.P = np.array(( ((0,0.6,0.4,0,0,0,0,0,0),
                              (0,1,0,0,0,0,0,0,0),
@@ -83,7 +83,9 @@ class mdp_env:
                             (pen, pen, pen, pen, pen, 60, pen, pen),
                             (pen, pen, pen, pen, pen, pen, 5, pen), 
                             (pen, pen, pen, 5, pen, pen, pen, 15),
-                            (pen, pen, pen, pen, 0, pen, pen, 0))))  
+                            (pen, pen, pen, pen, 0, pen, pen, 0))))
+        self.R = self.R.astype(float)
+        self.P = self.P.astype(float)
         self.gamma = 0.9999
         self.S = 9
         self.A = 8
