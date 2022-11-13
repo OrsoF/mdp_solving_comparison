@@ -1,5 +1,5 @@
 import numpy as np
-import sys
+import pandas as pd
 
 from environments.__init__ import envs_list, make_env
 from solvers.__init__ import solver_list, get_solver
@@ -21,7 +21,7 @@ for i_env, env_name in enumerate(envs_list):
 
 results = results/n_exp
 
-import pandas as pd
+
 
 table_dict_build = {}
 table_dict_build['Env'] = [elem[13:] for elem in envs_list]
