@@ -1,5 +1,7 @@
 # mdp_solving_comparison
 
+Run main.py to launch the comparison.
+
 We aim here to compare three MDP solving methods in terms of computing time :
 - MdpToolbox
 - Linear Programming solving with GurobiPy
@@ -10,4 +12,3 @@ To Do:
 - Fix Epsilon for all solvers
 - Add Taxi and change Gurobi to a premium license
 - Add Ex40
-- Remove example.py
