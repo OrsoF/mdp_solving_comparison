@@ -2,7 +2,7 @@ import numpy as np
 from mdptoolbox.util import check
 
 class MdpEnv:
-    def __init__(self, S=10, A=10) -> None:
+    def __init__(self, S=100, A=20) -> None:
         self.S, self.A = S, A
         self.P = np.random.random(size=(A, S, S))
         self.P = np.divide(self.P,np.sum(self.P, axis=2)[:, :, np.newaxis])

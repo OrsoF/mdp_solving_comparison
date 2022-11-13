@@ -13,7 +13,10 @@ for i_env, env_name in enumerate(envs_list):
     for i_solver, solver_name in enumerate(solver_list):
         for _ in range(n_exp):
             env = make_env(env_name)()
-            solver = get_solver(solver_name)(env)
+            try:
+                solver = get_solver(solver_name)(env)
+            except:
+                print('Failed :', env_name, solver_name)
             results[i_env, i_solver] += solver.building_time, solver.runtime
 
 results = results/n_exp
