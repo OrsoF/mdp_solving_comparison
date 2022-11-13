@@ -1,5 +1,5 @@
-gym
-numpy
-mdptoolbox
 gurobipy
+gym
+mdptoolbox
+numpy
 pandas
