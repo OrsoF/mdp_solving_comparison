@@ -12,3 +12,7 @@ To Do:
 - Fix Epsilon for all solvers
 - Add Taxi and change Gurobi to a premium license
 - Add Ex40
+
+Notes :
+- MdpToolbox fails to solve two environments
+- MdpToolbox convert sparse matrices to dense ones, and cannot gain times over Marmot
