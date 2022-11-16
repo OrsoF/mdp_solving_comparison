@@ -1,6 +1,15 @@
-# mdp_solving_comparison
+# Benchmark for solving MDP with tabular methods
 
-Run main.py to launch the comparison.
+## Installation
+
+- Clone this repository with git
+- 'pip install -r /Requirements.txt'
+
+## Run benchmark
+
+- Run main.py
+
+## Summary
 
 We aim here to compare three MDP solving methods in terms of computing time :
 - MdpToolbox
