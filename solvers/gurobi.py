@@ -10,6 +10,8 @@ class Solver:
 
         self.model = Model("MDP")
         self.model.setParam('OutputFlag', 0)
+        self.model.setParam(GRB.Param.Threads, 1)
+        self.model.setParam('LogToConsole', 0)
         self.var = []
         for _ in range(self.env.S):
             self.var.append(self.model.addVar(vtype=GRB.CONTINUOUS))

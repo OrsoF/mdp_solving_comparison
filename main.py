@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 
 from environments.__init__ import envs_list, make_env
 from solvers.__init__ import solver_list, get_solver
@@ -11,13 +12,16 @@ n_exp = 2
 
 for i_env, env_name in enumerate(envs_list):
     for i_solver, solver_name in enumerate(solver_list):
+        # print(env_name[13:], solver_name[8:], env.A, env.S)
         for _ in range(n_exp):
             env = make_env(env_name)()
             try:
                 solver = get_solver(solver_name)(env)
+                results[i_env, i_solver] += solver.building_time, solver.runtime
             except:
                 print('Failed :', env_name, solver_name)
-            results[i_env, i_solver] += solver.building_time, solver.runtime
+                results[i_env, i_solver] += np.nan, np.nan
+            
 
 results = results/n_exp
 

@@ -1,5 +1,5 @@
 gurobipy
 gym
-mdptoolbox
 numpy
 pandas
+git+https://github.com/OrsoF/pymdptoolbox_update.git
