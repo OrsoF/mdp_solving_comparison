@@ -5,7 +5,7 @@
 - Clone this repository with git
 - 'pip install -r /Requirements.txt'
 
-Fully working under Ubuntu.
+Fully working under Ubuntu 20.04, requires gurobi license to fullfil all tests.
 
 ## Run benchmark
 
