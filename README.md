@@ -1,6 +1,17 @@
-# mdp_solving_comparison
+# Benchmark for solving MDP with tabular methods
 
-Run main.py to launch the comparison.
+## Installation
+
+- Clone this repository with git
+- 'pip install -r /Requirements.txt'
+
+Fully working under Ubuntu.
+
+## Run benchmark
+
+- Run main.py
+
+## Summary
 
 We aim here to compare three MDP solving methods in terms of computing time :
 - MdpToolbox
@@ -12,3 +23,12 @@ To Do:
 - Fix Epsilon for all solvers
 - Add Taxi and change Gurobi to a premium license
 - Add Ex40
+- Fork MdpToolbox
+- Add other PI and VI methods
+- Add np.nan for errors in solving
+
+Notes :
+- MdpToolbox fails to solve two environments
+- MdpToolbox convert sparse matrices to dense ones, and cannot gain times over Marmot
+
+
