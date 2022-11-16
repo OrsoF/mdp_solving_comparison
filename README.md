@@ -5,6 +5,8 @@
 - Clone this repository with git
 - 'pip install -r /Requirements.txt'
 
+Fully working under Ubuntu.
+
 ## Run benchmark
 
 - Run main.py
