@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from tqdm import tqdm
 
 from environments.__init__ import envs_list, make_env
 from solvers.__init__ import solver_list, get_solver
