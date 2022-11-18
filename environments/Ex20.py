@@ -37,6 +37,6 @@ class MdpEnv:
 
         
 
-        self.gamma = 1
+        self.gamma = 0.999
         self.S = 3
         self.A = 4

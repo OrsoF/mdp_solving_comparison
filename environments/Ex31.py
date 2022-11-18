@@ -86,6 +86,6 @@ class MdpEnv:
                             (pen, pen, pen, pen, 0, pen, pen, 0))))
         self.R = self.R.astype(float)
         self.P = self.P.astype(float)
-        self.gamma = 0.9999
+        self.gamma = 0.999
         self.S = 9
         self.A = 8

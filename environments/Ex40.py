@@ -12,6 +12,6 @@ class MdpEnv:
                             (5,-1000,-1000,-1000)))
         self.R = self.R.astype(float)
         self.P = self.P.astype(float)
-        self.gamma = 0.9999
+        self.gamma = 0.999
         self.S = 4
         self.A = 4

@@ -28,4 +28,4 @@ class MdpEnv:
         self.A = gym_env.action_space.n
         self.P = build_P_frozen_lake(self.A, self.S)
         self.R = build_R_frozen_lake(self.A, self.S)
-        self.gamma = 0.9999
+        self.gamma = 0.999
