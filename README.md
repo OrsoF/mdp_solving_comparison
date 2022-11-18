@@ -25,7 +25,7 @@ To Do:
 - Add Ex40
 - Fork MdpToolbox
 - Add other PI and VI methods
-- Add np.nan for errors in solving
+- Compare value functions at the end to ensure same result
 
 Notes :
 - MdpToolbox fails to solve two environments
