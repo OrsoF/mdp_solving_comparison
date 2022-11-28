@@ -3,7 +3,6 @@ from tqdm import tqdm
 from environments.envs import make_env, envs_list
 from solvers.solvers import solve, solve_methods
 
-envs_list = envs_list[:3]
 n_exp = 5
 
 building_times = {}
@@ -26,13 +25,21 @@ for i in range(len(solve_methods)):
         building_times[sol][env_name] /= n_exp
         runtimes[sol][env_name] /= n_exp
 
+df_build, df_times = pd.DataFrame(building_times).transpose(), pd.DataFrame(runtimes).transpose()
+
+print()
+print(df_build.style.to_latex())
+print()
+print(df_times.style.to_latex())
 
 print()
 print('Building times')
 print()
-print(pd.DataFrame(building_times).transpose())
+print(df_build)
 
 print()
 print('Run times')
 print()
-print(pd.DataFrame(runtimes).transpose())
+print(df_times)
+
+
