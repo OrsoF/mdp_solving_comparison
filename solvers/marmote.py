@@ -1,10 +1,9 @@
 from solvers.pyMarmoteMDP import marmoteInterval, sparseMatrix, totalRewardMDP
 from time import thread_time
-import sys
 
 class Solver:
-    def __init__(self, env, epsi=0.0001, max_iter=1000, method='value_iteration'):
-
+    def __init__(self, env, method='vi', epsi=0.0001, max_iter=1000):
+        assert method in ['vi', 'vigs', 'pi', 'pim']
         # Paramètres
         self.env = env
         self.gamma = self.env.gamma
@@ -39,10 +38,31 @@ class Solver:
 
         self.building_time = thread_time()-start_time
 
-        if method == 'value_iteration':
+        if method=='vi':
             self.opt = self.mdp.valueIteration(epsi, max_iter)
-        else:
+        elif method=='vigs':
+            self.opt = self.mdp.valueIterationGS(epsi, max_iter)
+        elif method=='pi':
+            self.opt = self.mdp.policyIteration(epsi, max_iter)
+        elif method=='pim':
             self.opt = self.mdp.policyIterationModified(epsi, max_iter)
 
         self.runtime = thread_time()-self.building_time
         # self.opt.writeSolution()
+
+
+def m_vi(env):
+    solver = Solver(env, 'vi')
+    return solver.building_time, solver.runtime
+
+def m_vigs(env):
+    solver = Solver(env, 'vigs')
+    return solver.building_time, solver.runtime
+
+def m_pi(env):
+    solver = Solver(env, 'pi')
+    return solver.building_time, solver.runtime
+
+def m_pim(env):
+    solver = Solver(env, 'pim')
+    return solver.building_time, solver.runtime

@@ -2,8 +2,8 @@ from gurobipy import Model, LinExpr, GRB
 
 from time import thread_time
 
-class Solver:
-    def __init__(self, env, method='value_iteration'):
+class SolverPL:
+    def __init__(self, env):
         self.env = env
 
         start_time = thread_time()
@@ -37,3 +37,15 @@ class Solver:
         self.model.optimize()
 
         self.runtime = self.model.Runtime
+
+def g_pl(env):
+    solver = SolverPL(env)
+    return solver.building_time, solver.runtime
+
+class SolverPLDual:
+    def __init__(self):
+        self.env = None
+
+def g_pl_dual(env):
+    solver = SolverPL(env)
+    return solver.building_time, solver.runtime
