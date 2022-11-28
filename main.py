@@ -3,6 +3,7 @@ from tqdm import tqdm
 from environments.envs import make_env, envs_list
 from solvers.solvers import solve, solve_methods
 
+envs_list = envs_list[:3]
 n_exp = 5
 
 building_times = {}

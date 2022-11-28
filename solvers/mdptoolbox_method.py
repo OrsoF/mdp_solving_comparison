@@ -1,10 +1,10 @@
 from mdptoolbox.mdp import ValueIteration, PolicyIteration, ValueIterationGS, PolicyIterationModified
-from time import thread_time
+from time import thread_time# time as
 
 class Solver:
     def __init__(self, env, method='vi'):
         assert method in ['vi', 'vigs', 'pi', 'pim']
-
+        self.building_time, self.runtime = 0, 0
 
         self.env = env
 
@@ -25,7 +25,7 @@ class Solver:
 
         self.model.run()
 
-        self.runtime = thread_time()-self.building_time
+        self.runtime = thread_time()-start_time-self.building_time
 
 def mtb_vi(env):
     solver = Solver(env, 'vi')

@@ -1,5 +1,5 @@
 from solvers.pyMarmoteMDP import marmoteInterval, sparseMatrix, totalRewardMDP
-from time import thread_time
+from time import thread_time# time as
 
 class Solver:
     def __init__(self, env, method='vi', epsi=0.0001, max_iter=1000):
@@ -43,11 +43,11 @@ class Solver:
         elif method=='vigs':
             self.opt = self.mdp.valueIterationGS(epsi, max_iter)
         elif method=='pi':
-            self.opt = self.mdp.policyIteration(epsi, max_iter)
+            self.opt = self.mdp.policyIteration(max_iter)
         elif method=='pim':
-            self.opt = self.mdp.policyIterationModified(epsi, max_iter)
+            self.opt = self.mdp.policyIterationModified(epsi, max_iter, epsi, max_iter)
 
-        self.runtime = thread_time()-self.building_time
+        self.runtime = thread_time()-self.building_time-start_time
         # self.opt.writeSolution()
 
 
