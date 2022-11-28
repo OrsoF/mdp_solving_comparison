@@ -3,18 +3,15 @@ from tqdm import tqdm
 from environments.envs import make_env, envs_list
 from solvers.solvers import solve, solve_methods
 
-# envs_list, solve_methods = envs_list[:3], solve_methods[:3]
-envs_list = envs_list
-
-n_exp = 1
+n_exp = 5
 
 building_times = {}
 runtimes = {}
-for i in tqdm(range(len(solve_methods))):
+for i in range(len(solve_methods)):
     sol = solve_methods[i]
     building_times[sol] = {}
     runtimes[sol] = {}
-    for j in tqdm(range(len(envs_list))):
+    for j in range(len(envs_list)):
         env_name = envs_list[j]
         building_times[sol][env_name] = 0
         runtimes[sol][env_name] = 0
@@ -29,7 +26,6 @@ for i in tqdm(range(len(solve_methods))):
         runtimes[sol][env_name] /= n_exp
 
 
-# print(runtimes, building_times)
 print()
 print('Building times')
 print()
