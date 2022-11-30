@@ -2,7 +2,6 @@ import gurobipy as grb
 import platform
 import os
 import pickle
-import pandas as pd
 
 def gurobi_license():
     grb.Env('gurobi.log')

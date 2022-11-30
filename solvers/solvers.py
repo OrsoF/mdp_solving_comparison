@@ -2,27 +2,30 @@ from util import gurobi_license
 
 solve_methods = []
 
-from solvers.mdptoolbox_method import mtb_vi as mdptoolbox_value_iteration
-from solvers.mdptoolbox_method import mtb_vigs as mdptoolbox_value_iteration_GS
-from solvers.mdptoolbox_method import mtb_pi as mdptoolbox_policy_iteration
-from solvers.mdptoolbox_method import mtb_pim as mdptoolbox_policy_iteration_modified
+from solvers.mdptoolbox_method import mtb_vi as mdpTB_VI
+from solvers.mdptoolbox_method import mtb_vigs as mdpTB_VIGS
+from solvers.mdptoolbox_method import mtb_pi as mdpTB_PI
+from solvers.mdptoolbox_method import mtb_pim as mdpTB_PIM
 
-solve_methods = solve_methods + ['mdptoolbox_value_iteration',
-                                 'mdptoolbox_value_iteration_GS',
-                                 'mdptoolbox_policy_iteration',
-                                 'mdptoolbox_policy_iteration_modified']
+solve_methods = solve_methods + ['mdpTB_VI',
+                                 'mdpTB_VIGS',
+                                 'mdpTB_PI',
+                                 'mdpTB_PIM']
 
 try:
-    from solvers.marmote import m_vi as marmote_value_iteration
-    from solvers.marmote import m_vigs as marmote_value_iteration_GS
-    from solvers.marmote import m_pi as marmote_policy_iteration
-    from solvers.marmote import m_pim as marmote_policy_iteration_modified
-    solve_methods = solve_methods + ['marmote_value_iteration', 
-                                     'marmote_value_iteration_GS',
-                                     'marmote_policy_iteration',
-                                     'marmote_policy_iteration_modified',]
+    from solvers.marmote import m_vi as marmoteVI
+    from solvers.marmote import m_vigs as marmoteVIGS
+    from solvers.marmote import m_pi as marmotePI
+    from solvers.marmote import m_pim as marmotePIM
+    solve_methods = solve_methods + ['marmoteVI', 
+                                     'marmoteVIGS',
+                                     'marmotePI',
+                                     'marmotePIM']
 except:
     print('Marmote is not working currently.')
+
+from solvers.gurobi import g_pl as gurobi_pl
+from solvers.gurobi import g_pl_dual as gurobi_pl_dual
 
 if gurobi_license():
     from solvers.gurobi import g_pl as gurobi_pl
