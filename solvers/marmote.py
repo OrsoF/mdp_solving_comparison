@@ -1,5 +1,5 @@
 from solvers.pyMarmoteMDP import marmoteInterval, sparseMatrix, totalRewardMDP
-from time import thread_time# time as
+from time import thread_time_ns as thread_time
 
 class Solver:
     def __init__(self, env, method='vi', epsi=0.0001, max_iter=1000):

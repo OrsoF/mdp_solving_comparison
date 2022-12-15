@@ -1,6 +1,6 @@
 from gurobipy import Model, LinExpr, GRB
 
-from time import thread_time# time as
+from time import thread_time_ns as thread_time
 
 class SolverPL:
     def __init__(self, env):

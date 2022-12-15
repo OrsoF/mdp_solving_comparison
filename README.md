@@ -2,8 +2,13 @@
 
 ## Installation
 
+#### Mandatory
+
 - Clone this repository with git
 - 'pip install -r /Requirements.txt'
+
+#### Optional :
+
 - Install Gurobi solver with a license
 
 Fully working under Ubuntu 20.04, requires gurobi license to fullfil all tests.
@@ -30,9 +35,14 @@ To Do:
 - Air campaign planning problem https://www.aaai.org/Papers/AAAI/1998/AAAI98-023.pdf
 - 2048 2x2, 3x3
 - Grid nxn
+- Quels sont les concours de programmation 2000 ?
+- Sparses matrices ?
+- thread_time_ns pour la mesure de temps
+
 
 Notes :
 - MdpToolbox convert sparse matrices to dense ones, and cannot gain times over Marmot
 - MDP Solving is limited relatively to S. Partially Observable MDP ?
-
-
+- Voir avec les idées de Trystan
+- valueIterationGS, policyIteration marmote is not implemented
+- marmotePIM gives ValueIterationModified

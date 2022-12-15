@@ -1,5 +1,6 @@
 from mdptoolbox.mdp import ValueIteration, PolicyIteration, ValueIterationGS, PolicyIterationModified
-from time import thread_time# time as
+from time import thread_time_ns as thread_time
+import numpy as np
 
 class Solver:
     def __init__(self, env, method='vi'):

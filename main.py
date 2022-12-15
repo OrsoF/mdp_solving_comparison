@@ -1,13 +1,23 @@
 import pandas as pd
-from tqdm import tqdm
 from environments.envs import make_env, envs_list
 from solvers.solvers import solve, solve_methods
 import os
-import numpy as np
+from tqdm import tqdm
+from time import time
+
+t = time()
+
+# envs_list = envs_list[:5]
+# envs_list.remove('taxi')
+# envs_list.remove('froz_l_e')
+# envs_list.remove('froz_l')
+
+print(envs_list)
+print(solve_methods)
+
+n_exp = 50
 
 if 'times.csv' not in os.listdir(os.getcwd()):
-
-    n_exp = 5
 
     building_times = {}
     runtimes = {}
@@ -17,19 +27,22 @@ if 'times.csv' not in os.listdir(os.getcwd()):
         runtimes[sol] = {}
         for j in range(len(envs_list)):
             env_name = envs_list[j]
+            print(sol, env_name)
+
             building_times[sol][env_name] = 0
             runtimes[sol][env_name] = 0
             env = make_env(env_name)
 
-            for i in range(n_exp):
+            for i in tqdm(range(n_exp)):
                 times = solve(env, sol)
                 building_times[sol][env_name] += times[0]
                 runtimes[sol][env_name] += times[1]
-                
+
             building_times[sol][env_name] /= n_exp
             runtimes[sol][env_name] /= n_exp
 
-    func = lambda x : np.round(1000*x, 2)
+    # func = lambda x : np.round(1000*x, 2)
+    func = lambda x : x/10**9
 
     df_build, df_times = pd.DataFrame(building_times).transpose().apply(func), pd.DataFrame(runtimes).transpose().apply(func)
 
@@ -53,3 +66,13 @@ print()
 print('Run times')
 print()
 print(df_times)
+
+
+total_time = time()-t
+print()
+if total_time < 60:
+    print('Temps pris : {} secondes'.format(total_time))
+elif total_time < 3600:
+    print('Temps pris : {} minutes et {} secondes'.format(total_time//60, total_time%60))
+else:
+    print('Temps pris : {} heures, {} minutes et {} secondes'.format(total_time//3600, (total_time%3600//60), total_time%60))
