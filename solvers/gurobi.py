@@ -43,8 +43,51 @@ def g_pl(env):
     return solver.building_time, solver.runtime
 
 class SolverPLDual:
-    def __init__(self):
-        self.env = None
+    def __init__(self, env):
+        self.env = env
+
+        start_time = thread_time()
+
+        self.model = Model("MDP")
+        self.model.setParam('OutputFlag', 0)
+        self.model.setParam(GRB.Param.Threads, 1)
+        self.model.setParam('LogToConsole', 0)
+        self.var = {}
+        for s in range(self.env.S):
+            for a in range(self.env.A):
+                self.var[(s, a)] = self.model.addVar(vtype=GRB.CONTINUOUS)
+        
+        self.model.update()
+
+        self.obj = LinExpr()
+
+        for s in range(self.env.S):
+            for a in range(self.env.A):
+                self.obj += self.env.R[s, a]*self.var[(s, a)]
+    
+        self.model.setObjective(self.obj,GRB.MINIMIZE)
+
+        for s in range(self.env.S):
+            sum_1 = 0
+            for a in range(self.env.A):
+                sum_1 += self.var[(s, a)]
+            sum_2 = 0
+            for a in range(A):
+                for sp in range(S):
+                    sum_2 += self.env.P[a, s, sp]*self.var[(sp, a)]
+            mu = 1/self.env.S
+            self.model.addConstr(sum_1 - self.env.gamma * sum_2 == mu, "Contrainte%d" % s)
+
+        self.building_time = thread_time()-start_time
+
+        self.model.optimize()
+
+        self.runtime = self.model.Runtime
+
+
+# class SolverPLDual:
+#     def __init__(self):
+#         self.env = None
 
 def g_pl_dual(env):
     solver = SolverPL(env)
