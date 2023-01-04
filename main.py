@@ -4,75 +4,62 @@ from solvers.solvers import solve, solve_methods
 import os
 from tqdm import tqdm
 from time import time
+from datetime import timedelta
+from util import check_environment
 
-t = time()
+class Experience:
+    def __init__(self, n_exp=2, make_env=make_env, envs_list=envs_list, solve=solve, solve_methods=solve_methods, output_path=''):
+        self.n_exp = n_exp
+        self.make_env = make_env
+        self.envs_list = envs_list
+        self.solve = solve
+        self.solve_methods = solve_methods
+        self.output_path = output_path
 
-# envs_list = envs_list[:5]
-# envs_list.remove('taxi')
-# envs_list.remove('froz_l_e')
-# envs_list.remove('froz_l')
+    def run_experience(self):
+        if 'runtimes.csv' in os.listdir(os.path.join(os.getcwd(), self.output_path)):
+            self.runtimes
+            print('Already done.')
+        else:
+            t = time()
+            columns = {solver : [0.]*len(self.envs_list) for solver in self.solve_methods}
+            runtimes = pd.DataFrame(columns, index=self.envs_list)
 
-print(envs_list)
-print(solve_methods)
+            for solver in self.solve_methods:
+                for env_name in self.envs_list:
+                    env = self.make_env(env_name)
 
-n_exp = 50
+                    check_environment(env)
 
-if 'times.csv' not in os.listdir(os.getcwd()):
+                    for _ in range(self.n_exp):
+                        times = self.solve(env, solver)
+                        runtimes.loc[env_name, solver] += times[0]+times[1]
 
-    building_times = {}
-    runtimes = {}
-    for i in range(len(solve_methods)):
-        sol = solve_methods[i]
-        building_times[sol] = {}
-        runtimes[sol] = {}
-        for j in range(len(envs_list)):
-            env_name = envs_list[j]
-            print(sol, env_name)
+            func = lambda x : 10**(-9)*x/self.n_exp
+            self.runtimes = pd.DataFrame(runtimes).transpose().apply(func)
 
-            building_times[sol][env_name] = 0
-            runtimes[sol][env_name] = 0
-            env = make_env(env_name)
+            self.runtimes.to_csv('runtimes.csv')
 
-            for i in tqdm(range(n_exp)):
-                times = solve(env, sol)
-                building_times[sol][env_name] += times[0]
-                runtimes[sol][env_name] += times[1]
-
-            building_times[sol][env_name] /= n_exp
-            runtimes[sol][env_name] /= n_exp
-
-    # func = lambda x : np.round(1000*x, 2)
-    func = lambda x : x/10**9
-
-    df_build, df_times = pd.DataFrame(building_times).transpose().apply(func), pd.DataFrame(runtimes).transpose().apply(func)
-
-    df_build.to_csv('build.csv')
-    df_times.to_csv('times.csv')
-else:
-    df_build = pd.read_csv('build.csv')
-    df_times = pd.read_csv('times.csv')
-
-print()
-print(df_build.style.to_latex())
-print()
-print(df_times.style.to_latex())
-
-print()
-print('Building times')
-print()
-print(df_build)
-
-print()
-print('Run times')
-print()
-print(df_times)
+            print()
+            print(timedelta(seconds=time()-t))
 
 
-total_time = time()-t
-print()
-if total_time < 60:
-    print('Temps pris : {} secondes'.format(total_time))
-elif total_time < 3600:
-    print('Temps pris : {} minutes et {} secondes'.format(total_time//60, total_time%60))
-else:
-    print('Temps pris : {} heures, {} minutes et {} secondes'.format(total_time//3600, (total_time%3600//60), total_time%60))
+    def reset(self):
+        if 'runtimes.csv' in os.listdir(os.path.join(os.getcwd(), self.output_path)):
+            os.remove(os.path.join(os.getcwd(), self.output_path, 'runtimes.csv'))
+            print('Reset successful.')
+        else:
+            print('No experience to reset.')
+
+    def show(self):
+        print('Total run times')
+        print()
+        print(self.runtimes)
+
+    def show_latex(self):
+        print(self.runtimes.style.to_latex())
+
+exp = Experience()
+exp.reset()
+exp.run_experience()
+exp.show()

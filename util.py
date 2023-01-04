@@ -29,3 +29,11 @@ def pickle_open(path):
     with open(path, 'rb') as handle:
         file = pickle.load(handle)
     return file
+
+def check_environment(env):
+    assert len(env.P.shape)==3
+    assert len(env.R.shape)==2
+    assert env.P.shape[1]==env.P.shape[2] and env.P.shape[1]==env.R.shape[0]
+    assert env.P.shape[0]==env.R.shape[1]
+    assert 0 < env.gamma <= 1
+    pass

@@ -6,11 +6,6 @@ class SolverPL:
     def __init__(self, env):
         self.env = env
 
-        assert len(self.env.P.shape)==3
-        assert len(self.env.R.shape)==2
-        assert self.env.P.shape[1]==self.env.P.shape[2] and self.env.P.shape[1]==self.env.R.shape[0]
-        assert self.env.P.shape[0]==self.env.R.shape[1]
-
         start_time = thread_time()
 
         self.model = Model("MDP")
