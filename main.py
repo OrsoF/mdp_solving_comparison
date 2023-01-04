@@ -6,9 +6,16 @@ from tqdm import tqdm
 from time import time
 from datetime import timedelta
 from util import check_environment
+from mdptoolbox.mdp import PolicyIteration
 
 class Experience:
-    def __init__(self, n_exp=2, make_env=make_env, envs_list=envs_list, solve=solve, solve_methods=solve_methods, output_path=''):
+    def __init__(self, 
+                 n_exp=2, 
+                 make_env=make_env, 
+                 envs_list=envs_list, 
+                 solve=solve, 
+                 solve_methods=solve_methods, 
+                 output_path=''):
         self.n_exp = n_exp
         self.make_env = make_env
         self.envs_list = envs_list
@@ -31,9 +38,14 @@ class Experience:
 
                     check_environment(env)
 
+                    pi_mdptoolbox = PolicyIteration(env.P, env.R, env.gamma, max_iter=10e5)
+                    pi_mdptoolbox.run()
+                    self.true_V = pi_mdptoolbox.V
+                    self.true_policy = pi_mdptoolbox.policy
+
                     for _ in range(self.n_exp):
-                        times = self.solve(env, solver)
-                        runtimes.loc[env_name, solver] += times[0]+times[1]
+                        runtime = self.solve(env, solver, epsi)
+                        runtimes.loc[env_name, solver] += runtime
 
             func = lambda x : 10**(-9)*x/self.n_exp
             self.runtimes = pd.DataFrame(runtimes).transpose().apply(func)

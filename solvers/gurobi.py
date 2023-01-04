@@ -40,7 +40,7 @@ class SolverPL:
 
 def g_pl(env):
     solver = SolverPL(env)
-    return solver.building_time, solver.runtime
+    return solver.building_time + solver.runtime
 
 class SolverPLDual:
     def __init__(self, env):
@@ -72,8 +72,8 @@ class SolverPLDual:
             for a in range(self.env.A):
                 sum_1 += self.var[(s, a)]
             sum_2 = 0
-            for a in range(A):
-                for sp in range(S):
+            for a in range(self.env.A):
+                for sp in range(self.env.S):
                     sum_2 += self.env.P[a, s, sp]*self.var[(sp, a)]
             mu = 1/self.env.S
             self.model.addConstr(sum_1 - self.env.gamma * sum_2 == mu, "Contrainte%d" % s)
@@ -90,5 +90,5 @@ class SolverPLDual:
 #         self.env = None
 
 def g_pl_dual(env):
-    solver = SolverPL(env)
-    return solver.building_time, solver.runtime
+    solver = SolverPLDual(env)
+    return solver.building_time + solver.runtime

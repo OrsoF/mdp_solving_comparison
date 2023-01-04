@@ -29,3 +29,5 @@ class MdpEnv:
         self.P = build_P_frozen_lake(self.A, self.S)
         self.R = build_R_frozen_lake(self.A, self.S)
         self.gamma = 0.999
+        self.epsi = 1e-5
+        

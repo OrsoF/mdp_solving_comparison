@@ -106,3 +106,5 @@ class Rooms:
         self.P, self.R = add_exit(self.P, self.R, self.size)
         self.R = self.R[:, :, 0]
         self.R = self.R.transpose()
+        self.epsi = 1e-5
+        

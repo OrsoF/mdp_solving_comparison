@@ -89,3 +89,5 @@ class MdpEnv:
         self.gamma = 0.999
         self.S = 9
         self.A = 8
+        self.epsi = 1e-5
+        

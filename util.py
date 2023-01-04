@@ -36,4 +36,4 @@ def check_environment(env):
     assert env.P.shape[1]==env.P.shape[2] and env.P.shape[1]==env.R.shape[0]
     assert env.P.shape[0]==env.R.shape[1]
     assert 0 < env.gamma <= 1
-    pass
+    assert 0 < env.epsi < 1
