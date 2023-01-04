@@ -18,9 +18,9 @@ try:
     from solvers.marmote import m_pi as marmotePI
     from solvers.marmote import m_pim as marmotePIM
     solve_methods = solve_methods + ['marmoteVI', 
-                                     'marmoteVIGS',
-                                     'marmotePI',
-                                     'marmotePIM']
+                                     'marmoteVIGS']
+                                    #  'marmotePI',
+                                    #  'marmotePIM']
 except:
     print('Marmote is not working currently.')
 
@@ -32,6 +32,8 @@ if gurobi_license():
     from solvers.gurobi import g_pl_dual as gurobi_pl_dual
     solve_methods = solve_methods + ['gurobi_pl',
                                     'gurobi_pl_dual']
+else:
+    print('No Gurobi License.')
 
 def solve(env, solving_method=solve_methods[0]):
     return globals()[solving_method](env)

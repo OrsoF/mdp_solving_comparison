@@ -9,16 +9,16 @@ from environments.taxi import MdpEnv as taxi
 from environments.four_rooms_grid import Rooms as rooms
 
 
-# envs_list = ['Ex10',
-#              'Ex20', 
-#              'Ex30',
-#              'Ex31',
-#              'Ex40',
-#              'froz_l_e',
-#              'froz_l',
-#              'taxi']
-envs_list = []
-for i in range(1, 20, 1):
+envs_list = ['Ex10',
+             'Ex20', 
+             'Ex30',
+             'Ex31',
+             'Ex40',
+             'froz_l_e',
+             'froz_l',
+             'taxi']
+
+for i in range(1, 5, 1):
     envs_list.append('rooms'+'_'+str(i))
 
 
