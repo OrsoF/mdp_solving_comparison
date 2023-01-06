@@ -1,3 +1,16 @@
+class Solver:
+    def __init__(self, env, solver) -> None:
+        self.env = env
+        self.solver = solver
+
+    def build(self):
+        self.solver = self.solver(self.env.P, self.env.R, self.env.gamma, self.env.epsi)
+
+    def run(self):
+        self.solver.run()
+        self.value = self.solver.value
+        self.policy = self.solver.policy
+
 from util import gurobi_license
 
 solve_methods = []

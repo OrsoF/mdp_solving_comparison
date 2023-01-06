@@ -25,19 +25,14 @@ We aim here to compare three MDP solving methods in terms of computing time :
 - Linear Programming solving with GurobiPy
 
 To Do:
-- Fix Max Iter to compare
-- Fix Epsilon for all solvers
 - Compare value functions at the end to ensure same result
-- Add Grid nxn four rooms
 - Add parallelized policy iteration
 - Add dual for linear solver
 - Add new instances of environments (Blackjack, Cliff Walking, programmation contest 2000)
 - Air campaign planning problem https://www.aaai.org/Papers/AAAI/1998/AAAI98-023.pdf
 - 2048 2x2, 3x3
-- Grid nxn
 - Quels sont les concours de programmation 2000 ?
 - Sparses matrices ?
-- thread_time_ns pour la mesure de temps
 
 
 Notes :

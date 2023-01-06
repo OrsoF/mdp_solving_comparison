@@ -1,5 +1,5 @@
 import pandas as pd
-from environments.envs import make_env, envs_list
+# from environments.envs import make_env, envs_list
 from solvers.solvers import solve, solve_methods
 import os
 from tqdm import tqdm
@@ -7,18 +7,18 @@ from time import time
 from datetime import timedelta
 from util import check_environment
 from mdptoolbox.mdp import PolicyIteration
+from envs import MdpEnv
 
 class Experience:
     def __init__(self, 
-                 n_exp=2, 
-                 make_env=make_env, 
-                 envs_list=envs_list, 
-                 solve=solve, 
+                 n_exp=1, 
+                 env_maker=MdpEnv,
+                 solve=solve,
                  solve_methods=solve_methods, 
                  output_path=''):
         self.n_exp = n_exp
-        self.make_env = make_env
-        self.envs_list = envs_list
+        self.env_maker = env_maker()
+        self.envs_list = self.env_maker.available_envs[:3]
         self.solve = solve
         self.solve_methods = solve_methods
         self.output_path = output_path
@@ -34,7 +34,9 @@ class Experience:
 
             for solver in self.solve_methods:
                 for env_name in self.envs_list:
-                    env = self.make_env(env_name)
+                    print(solver, env_name)
+                    self.env_maker.make_env(env_name)
+                    env = self.env_maker
 
                     check_environment(env)
 
@@ -44,7 +46,7 @@ class Experience:
                     self.true_policy = pi_mdptoolbox.policy
 
                     for _ in range(self.n_exp):
-                        runtime = self.solve(env, solver, epsi)
+                        runtime = self.solve(env, solver)
                         runtimes.loc[env_name, solver] += runtime
 
             func = lambda x : 10**(-9)*x/self.n_exp

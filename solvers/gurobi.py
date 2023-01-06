@@ -1,61 +1,52 @@
 from gurobipy import Model, LinExpr, GRB
-
 from time import thread_time_ns as thread_time
 
-class SolverPL:
-    def __init__(self, env):
-        self.env = env
-
-        start_time = thread_time()
-
+class GurobiSolverPL:
+    def __init__(self) -> None:
         self.model = Model("MDP")
         self.model.setParam('OutputFlag', 0)
         self.model.setParam(GRB.Param.Threads, 1)
         self.model.setParam('LogToConsole', 0)
+    
+    def build(self, env):
+        self.env = env
+        start_time = thread_time()
         self.var = []
         for _ in range(self.env.S):
-            self.var.append(self.model.addVar(vtype=GRB.CONTINUOUS))
-        
+            self.var.append(self.model.addVar(vtype=GRB.CONTINUOUS, lb=0))
         self.model.update()
-
         self.obj = LinExpr()
-
         for i in range(self.env.S):
             self.obj += self.var[i]/self.env.S
-    
-        self.model.setObjective(self.obj,GRB.MINIMIZE)
-
+        self.model.setObjective(self.obj,GRB.MAXIMIZE)
         for i in range(self.env.S):
             for j in range(self.env.A):
                 total = 0
                 for k in range(self.env.S):
-                    total = total + self.env.gamma*self.env.P[j][i,k]*self.var[k]
+                    total = total + self.env.gamma*self.env.P[j,i,k]*self.var[k]
                 self.model.addConstr( self.var[i] >= self.env.R[i,j] + total, "Contrainte%d" % i)
 
         self.building_time = thread_time()-start_time
 
+    def run(self):
         self.model.optimize()
-
         self.runtime = self.model.Runtime
 
-def g_pl(env):
-    solver = SolverPL(env)
-    return solver.building_time + solver.runtime
-
-class SolverPLDual:
-    def __init__(self, env):
-        self.env = env
-
-        start_time = thread_time()
-
+class GurobiSolverPLDual:
+    def __init__(self) -> None:
         self.model = Model("MDP")
         self.model.setParam('OutputFlag', 0)
         self.model.setParam(GRB.Param.Threads, 1)
         self.model.setParam('LogToConsole', 0)
+    
+    def build(self, env):
+        self.env = env
+        start_time = thread_time()
+
         self.var = {}
         for s in range(self.env.S):
             for a in range(self.env.A):
-                self.var[(s, a)] = self.model.addVar(vtype=GRB.CONTINUOUS)
+                self.var[(s, a)] = self.model.addVar(vtype=GRB.CONTINUOUS, lb=0.0)
         
         self.model.update()
 
@@ -65,7 +56,7 @@ class SolverPLDual:
             for a in range(self.env.A):
                 self.obj += self.env.R[s, a]*self.var[(s, a)]
     
-        self.model.setObjective(self.obj,GRB.MINIMIZE)
+        self.model.setObjective(self.obj,GRB.MAXIMIZE)
 
         for s in range(self.env.S):
             sum_1 = 0
@@ -80,15 +71,7 @@ class SolverPLDual:
 
         self.building_time = thread_time()-start_time
 
+    def run(self):
         self.model.optimize()
 
         self.runtime = self.model.Runtime
-
-
-# class SolverPLDual:
-#     def __init__(self):
-#         self.env = None
-
-def g_pl_dual(env):
-    solver = SolverPLDual(env)
-    return solver.building_time + solver.runtime

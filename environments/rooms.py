@@ -1,7 +1,4 @@
-from mdptoolbox.util import check
 import numpy as np
-import itertools
-
 
 def coord(s, size):
     return s // size, s % size
@@ -92,19 +89,20 @@ def add_exit(P, R, size):
 
     return P, R
 
-
-class Rooms:
-    def __init__(self, n=5):
+class Mdp:
+    def __init__(self, n=5) -> None:
+        self.dim = n
         self.A = 4
-        self.S = 4 * n * n
-        self.size = 2*n
-        self.gamma = 0.999
-        self.P = np.zeros((self.A, self.S, self.S))
+        self.S = 4 * self.dim * self.dim
+        self.size = 2*self.dim
+
         self.R = -np.ones((self.A, self.S, self.S))
+        self.P = np.zeros((self.A, self.S, self.S))
         self.P = add_displacements(self.P, self.size)
         self.P = add_walls(self.P, self.size)
         self.P, self.R = add_exit(self.P, self.R, self.size)
+
+        
         self.R = self.R[:, :, 0]
         self.R = self.R.transpose()
-        self.epsi = 1e-5
-        
+

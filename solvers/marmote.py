@@ -2,15 +2,18 @@ from solvers.pyMarmoteMDP import marmoteInterval, sparseMatrix, totalRewardMDP
 from time import thread_time_ns as thread_time
 
 class Solver:
-    def __init__(self, env, method='vi', max_iter=1000):
-
+    def __init__(self, env, method='vi'):
         assert method in ['vi', 'vigs', 'pi', 'pim']
         # Paramètres
         self.env = env
         self.gamma = self.env.gamma
         self.epsi = self.env.epsi
+        self.max_iter = 1000
+        self.method = method
 
-        start_time = thread_time()
+    def build(self):
+
+        self.start_time = thread_time()
         self.state_space = marmoteInterval(0, self.env.S-1)
         self.action_space = marmoteInterval(0, self.env.A-1)
         self.S = self.state_space.cardinal()
@@ -35,20 +38,20 @@ class Solver:
             self.transitions_list.append(P)
             P = None
 
-        # self.mdp.writeMDP()
+    def run(self):
 
         self.building_time = thread_time()-start_time
 
-        if method=='vi':
-            self.opt = self.mdp.valueIteration(self.epsi, max_iter)
-        elif method=='vigs':
-            self.opt = self.mdp.valueIterationGS(self.epsi, max_iter)
-        elif method=='pi':
-            self.opt = self.mdp.policyIteration(max_iter)
-        elif method=='pim':
-            self.opt = self.mdp.policyIterationModified(self.epsi, max_iter, self.epsi, max_iter)
+        if self.method=='vi':
+            self.opt = self.mdp.valueIteration(self.epsi, self.max_iter)
+        elif self.method=='vigs':
+            self.opt = self.mdp.valueIterationGS(self.epsi, self.max_iter)
+        elif self.method=='pi':
+            self.opt = self.mdp.policyIteration(self.max_iter)
+        elif self.method=='pim':
+            self.opt = self.mdp.policyIterationModified(self.epsi, self.max_iter, self.epsi, self.max_iter)
 
-        self.runtime = thread_time()-self.building_time-start_time
+        self.runtime = thread_time()-self.building_time-self.start_time
         # self.opt.writeSolution()
 
 

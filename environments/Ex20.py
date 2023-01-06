@@ -1,6 +1,6 @@
 import numpy as np
 
-class MdpEnv:
+class Mdp:
     def __init__(self) -> None:
         self.P = np.zeros((4, 3, 3))
         self.P[0, 0, 2] = 1
@@ -35,10 +35,5 @@ class MdpEnv:
         self.R[2,2] = -1000
         self.R[2,3] = 3
 
-        
-
-        self.gamma = 0.999
         self.S = 3
         self.A = 4
-        self.epsi = 1e-5
-        
