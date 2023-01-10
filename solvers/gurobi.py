@@ -1,15 +1,32 @@
 from gurobipy import Model, LinExpr, GRB
 from time import thread_time_ns as thread_time
 
+class Solver:
+    def __init__(self, env, solve_method):
+        self.available_methods = ['Pl', 'DualPl']
+        self.solve_method = solve_method
+
+        if self.solve_method=='Pl':
+            self.solver = GurobiSolverPL(env)
+        else:
+            self.solver = GurobiSolverPLDual(env)
+
+    def build(self):
+        self.solver.build()
+
+    def run(self):
+        self.solver.run()
+        self.total_time = self.solver.total_time        
+
 class GurobiSolverPL:
-    def __init__(self) -> None:
-        self.model = Model("MDP")
-        self.model.setParam('OutputFlag', 0)
-        self.model.setParam(GRB.Param.Threads, 1)
-        self.model.setParam('LogToConsole', 0)
-    
-    def build(self, env):
+    def __init__(self, env) -> None:
         self.env = env
+        self.model = Model("MDP")
+        # self.model.setParam('OutputFlag', 0)
+        # self.model.setParam(GRB.Param.Threads, 1)
+        # self.model.setParam('LogToConsole', 0)
+    
+    def build(self):
         start_time = thread_time()
         self.var = []
         for _ in range(self.env.S):
@@ -18,7 +35,7 @@ class GurobiSolverPL:
         self.obj = LinExpr()
         for i in range(self.env.S):
             self.obj += self.var[i]/self.env.S
-        self.model.setObjective(self.obj,GRB.MAXIMIZE)
+        self.model.setObjective(self.obj,GRB.MINIMIZE)
         for i in range(self.env.S):
             for j in range(self.env.A):
                 total = 0
@@ -30,17 +47,18 @@ class GurobiSolverPL:
 
     def run(self):
         self.model.optimize()
-        self.runtime = self.model.Runtime
+        self.total_time = self.model.Runtime + self.building_time
+        assert GRB.OPTIMAL == 2
 
 class GurobiSolverPLDual:
-    def __init__(self) -> None:
-        self.model = Model("MDP")
-        self.model.setParam('OutputFlag', 0)
-        self.model.setParam(GRB.Param.Threads, 1)
-        self.model.setParam('LogToConsole', 0)
-    
-    def build(self, env):
+    def __init__(self, env) -> None:
         self.env = env
+        self.model = Model("MDP")
+        # self.model.setParam('OutputFlag', 0)
+        # self.model.setParam(GRB.Param.Threads, 1)
+        # self.model.setParam('LogToConsole', 0)
+    
+    def build(self):
         start_time = thread_time()
 
         self.var = {}
@@ -73,5 +91,6 @@ class GurobiSolverPLDual:
 
     def run(self):
         self.model.optimize()
-
         self.runtime = self.model.Runtime
+        self.total_time = self.runtime + self.building_time
+        assert GRB.OPTIMAL == 2

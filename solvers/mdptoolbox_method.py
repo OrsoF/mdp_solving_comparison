@@ -4,44 +4,27 @@ import numpy as np
 
 class Solver:
     def __init__(self, env, method='vi'):
-
-        assert method in ['vi', 'vigs', 'pi', 'pim']
+        self.available_methods = ['vi', 'vigs', 'pi', 'pim']
+        assert method in self.available_methods
         self.building_time, self.runtime = 0, 0
         self.env = env
         self.epsi = self.env.epsi
+        self.method = method
 
-        if method == 'vi':
-            start_time = thread_time()
+    def build(self):
+        start_time = thread_time()
+        if self.method == 'vi':
             self.model = ValueIteration(self.env.P, self.env.R, discount=self.env.gamma, epsilon=self.epsi)
-        elif method=='vigs':
-            start_time = thread_time()
+        elif self.method=='vigs':
             self.model = ValueIterationGS(self.env.P, self.env.R, discount=self.env.gamma, epsilon=self.epsi)
-        elif method=='pi':
-            start_time = thread_time()
+        elif self.method=='pi':
             self.model = PolicyIteration(self.env.P, self.env.R, discount=self.env.gamma)
-        elif method=='pim':
-            start_time = thread_time()
+        elif self.method=='pim':
             self.model = PolicyIterationModified(self.env.P, self.env.R, discount=self.env.gamma)
+        self.building_time = thread_time() - start_time
 
-        self.building_time = thread_time()-start_time
-
+    def run(self):
+        start_run_time = thread_time()
         self.model.run()
-
-        self.runtime = thread_time()-start_time-self.building_time
-
-def mtb_vi(env):
-    solver = Solver(env, 'vi')
-    return solver.building_time + solver.runtime
-
-def mtb_vigs(env):
-    solver = Solver(env, 'vigs')
-    return solver.building_time + solver.runtime
-
-def mtb_pi(env):
-    solver = Solver(env, 'pi')
-    return solver.building_time + solver.runtime
-
-def mtb_pim(env):
-    solver = Solver(env, 'pim')
-    return solver.building_time + solver.runtime
+        self.total_time = (thread_time()-start_run_time)+self.building_time
     
