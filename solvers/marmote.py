@@ -26,8 +26,8 @@ class MarmoteSolverVI:
             P = sparseMatrix(self.S)
             for s1 in range(self.env.S):
                 for s2 in range(self.env.S):
-                    if self.env.P[a, s, s] > 0.:
-                        P.addToEntry(s, s, self.env.P[a, s, s])
+                    if self.env.P[a, s1, s2] > 0.:
+                        P.addToEntry(s1, s2, self.env.P[a, s1, s2])
             self.mdp.addMatrix(a, P)
             self.transitions_list.append(P)
             P = None
@@ -104,8 +104,8 @@ class MarmoteSolverPI:
             P = sparseMatrix(self.S)
             for s1 in range(self.env.S):
                 for s2 in range(self.env.S):
-                    if self.env.P[a, s, s] > 0.:
-                        P.addToEntry(s, s, self.env.P[a, s, s])
+                    if self.env.P[a, s1, s2] > 0.:
+                        P.addToEntry(s1, s2, self.env.P[a, s1, s2])
             self.mdp.addMatrix(a, P)
             self.transitions_list.append(P)
             P = None
@@ -142,8 +142,8 @@ class MarmoteSolverPIM:
             P = sparseMatrix(self.S)
             for s1 in range(self.env.S):
                 for s2 in range(self.env.S):
-                    if self.env.P[a, s, s] > 0.:
-                        P.addToEntry(s, s, self.env.P[a, s, s])
+                    if self.env.P[a, s1, s2] > 0.:
+                        P.addToEntry(s1, s2, self.env.P[a, s1, s2])
             self.mdp.addMatrix(a, P)
             self.transitions_list.append(P)
             P = None

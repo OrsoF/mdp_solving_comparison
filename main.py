@@ -22,7 +22,7 @@ Ex10, Ex20, Ex30, Ex31, Ex40 = Ex10(), Ex20(), Ex30(), Ex31(), Ex40()
 
 available_envs = []
 available_envs = [Ex10, Ex20, Ex30, Ex31, Ex40]
-available_envs.append(MdpGym("Taxi-v3"))
+# available_envs.append(MdpGym("Taxi-v3"))
 available_envs.append(MdpGym("FrozenLake8x8-v1"))
 available_envs.append(MdpGym("FrozenLake-v1"))
 room_size_range = 2, 6
