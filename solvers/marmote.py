@@ -1,5 +1,7 @@
 from solvers.pyMarmoteMDP import marmoteInterval, sparseMatrix, totalRewardMDP
 from time import thread_time_ns as thread_time
+from time import sleep
+import numpy as np
 
 class MarmoteSolverVI:
     def __init__(self, env):
@@ -38,6 +40,8 @@ class MarmoteSolverVI:
         start_run_time = thread_time()
         self.opt = self.mdp.valueIteration(self.epsi, self.max_iter)
         self.total_time = (thread_time()-start_run_time)+self.building_time
+        self.V = np.zeros((self.env.S))
+
 
 class MarmoteSolverVIGS:
     def __init__(self, env):
@@ -77,6 +81,8 @@ class MarmoteSolverVIGS:
         start_run_time = thread_time()
         self.opt = self.mdp.valueIterationGS(self.epsi, self.max_iter)
         self.total_time = (thread_time()-start_run_time)+self.building_time
+        self.V = np.zeros((self.env.S))
+
 
 class MarmoteSolverPI:
     def __init__(self, env):
@@ -115,6 +121,8 @@ class MarmoteSolverPI:
         start_run_time = thread_time()
         self.opt = self.mdp.policyIteration(self.max_iter)
         self.total_time = (thread_time()-start_run_time)+self.building_time
+        self.V = np.zeros((self.env.S))
+
 
 class MarmoteSolverPIM:
     def __init__(self, env):
@@ -154,3 +162,4 @@ class MarmoteSolverPIM:
         start_run_time = thread_time()
         self.opt = self.mdp.policyIterationModified(self.epsi, self.max_iter, self.epsi, self.max_iter)
         self.total_time = (thread_time()-start_run_time)+self.building_time
+        self.V = np.zeros((self.env.S))

@@ -1,6 +1,6 @@
 import platform
 import os
-from time import time
+from time import time, sleep
 import pandas as pd
 from mdptoolbox.mdp import ValueIteration
 from datetime import timedelta
@@ -69,18 +69,22 @@ class Experience:
             columns = {sol.__name__ : 0 for sol in self.solvers}
 
             self.runtimes = pd.DataFrame(columns, index=[env.__name__ for env in self.environments])
+            self.value_error = pd.DataFrame(columns, index=[env.__name__ for env in self.environments])
 
             for env in self.environments:
                 self.true_V, self.true_policy = self.get_true_solutions(env)
 
                 for solver in self.solvers:
-                    print(env, solver)
+                    # print(env, solver)
                     for _ in range(self.n_exp):
                         solver_env = solver(env)
                         solver_env.build()
                         solver_env.run()
                         total_time = solver_env.total_time
                         self.runtimes.loc[env.__name__, solver_env.__name__] += total_time
+                        self.value_error.loc[env.__name__, solver_env.__name__] += np.mean((solver_env.V-self.true_V)**2)
+
+
 
             func = lambda x : x/self.n_exp*10**(-9)
             self.runtimes = self.runtimes.transpose().apply(func)
@@ -93,6 +97,9 @@ class Experience:
 
             print()
             print(timedelta(seconds=time()-t))
+
+            print()
+            print(self.value_error)
 
 
     def reset(self):
