@@ -1,22 +1,7 @@
 from gurobipy import Model, LinExpr, GRB
 from time import thread_time_ns as thread_time
-
-class Solver:
-    def __init__(self, env, solve_method):
-        self.available_methods = ['Pl', 'DualPl']
-        self.solve_method = solve_method
-
-        if self.solve_method=='Pl':
-            self.solver = GurobiSolverPL(env)
-        else:
-            self.solver = GurobiSolverPLDual(env)
-
-    def build(self):
-        self.solver.build()
-
-    def run(self):
-        self.solver.run()
-        self.total_time = self.solver.total_time        
+import numpy as np
+from util import compute_value
 
 class GurobiSolverPL:
     def __init__(self, env) -> None:
@@ -49,6 +34,7 @@ class GurobiSolverPL:
     def run(self):
         self.model.optimize()
         self.total_time = self.model.Runtime + self.building_time
+        self.V = np.array(self.model.x)-self.model.x[0]
         assert GRB.OPTIMAL == 2
 
 class GurobiSolverPLDual:
@@ -85,7 +71,7 @@ class GurobiSolverPLDual:
             sum_2 = 0
             for a in range(self.env.A):
                 for sp in range(self.env.S):
-                    sum_2 += self.env.P[a, s, sp]*self.var[(sp, a)]
+                    sum_2 += self.env.P[a, sp, s]*self.var[(sp, a)]
             mu = 1/self.env.S
             self.model.addConstr(sum_1 - self.env.gamma * sum_2 == mu, "Contrainte%d" % s)
 
@@ -95,4 +81,13 @@ class GurobiSolverPLDual:
         self.model.optimize()
         self.runtime = self.model.Runtime
         self.total_time = self.runtime + self.building_time
+        self.policy = self.build_policy()
+        self.V = compute_value(self.env.P, self.env.R, self.policy, self.env.gamma, self.env.epsi)
         assert GRB.OPTIMAL == 2
+
+    def build_policy(self):
+        pi = np.zeros((self.env.S, self.env.A))
+        for s in range(self.env.S):
+            for a in range(self.env.A):
+                pi[s, a] = self.var[(s, a)].x/sum(self.var[(s, a)].x for a in range(self.env.A))
+        return np.argmax(pi, axis=1)

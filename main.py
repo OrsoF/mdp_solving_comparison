@@ -5,6 +5,7 @@ import pandas as pd
 from mdptoolbox.mdp import ValueIteration
 from datetime import timedelta
 import matplotlib.pyplot as plt
+import numpy as np
 
 from util import MdpGym, gurobi_license, check_environment
 
@@ -58,7 +59,7 @@ class Experience:
     def get_true_solutions(self, env):
         pi_mdptoolbox = ValueIteration(env.P, env.R, env.gamma, epsilon=10e-2)
         pi_mdptoolbox.run()
-        return pi_mdptoolbox.V, pi_mdptoolbox.policy
+        return np.array(pi_mdptoolbox.V), np.array(pi_mdptoolbox.policy)
 
     def run_experience(self):
         if 'runtimes.csv' in os.listdir(os.getcwd()):

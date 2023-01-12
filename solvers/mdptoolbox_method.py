@@ -19,6 +19,7 @@ class MdpTBSolverVI:
         start_run_time = thread_time()
         self.model.run()
         self.total_time = (thread_time()-start_run_time)+self.building_time
+        self.V = np.array(self.model.V)-self.model.V[0]
     
 class MdpTBSolverVIGS:
     def __init__(self, env):
@@ -37,6 +38,7 @@ class MdpTBSolverVIGS:
         start_run_time = thread_time()
         self.model.run()
         self.total_time = (thread_time()-start_run_time)+self.building_time
+        self.V = np.array(self.model.V)-self.model.V[0]
     
 class MdpTBSolverPI:
     def __init__(self, env):
@@ -55,6 +57,7 @@ class MdpTBSolverPI:
         start_run_time = thread_time()
         self.model.run()
         self.total_time = (thread_time()-start_run_time)+self.building_time
+        self.V = np.array(self.model.V)-self.model.V[0]
     
 class MdpTBSolverPIM:
     def __init__(self, env):
@@ -73,4 +76,5 @@ class MdpTBSolverPIM:
         start_run_time = thread_time()
         self.model.run()
         self.total_time = (thread_time()-start_run_time)+self.building_time
+        self.V = np.array(self.model.V)-self.model.V[0]
     

@@ -69,5 +69,18 @@ class MdpGym:
 def compute_policy(P, R, V):
     pass
 
-def compute_value(P, R, policy):
-    pass
+def compute_value(P, R, policy, gamma, epsi=1e-2):
+    A, S, S = P.shape
+    V = np.zeros(S)
+    while True:
+        delta = 0
+        for s in range(S):
+            v = 0
+            a = policy[s]
+            for sp, prob in enumerate(P[a, s]):
+                v += 1 * prob * (R[s, a] + gamma * V[sp])
+            delta = max(delta, np.abs(v - V[s]))
+            V[s] = v
+        if delta < epsi:
+            break
+    return np.array(V)-V[0]
