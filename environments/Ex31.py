@@ -88,3 +88,6 @@ class Mdp:
         self.P = self.P.astype(float)
         self.S = 9
         self.A = 8
+        self.gamma = 0.999
+        self.epsi = 1e-2
+        self.__name__ = 'Ex31'

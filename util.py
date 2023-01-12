@@ -44,7 +44,8 @@ def check_environment(env):
 
 class MdpGym:
     def __init__(self, gym_env_name) -> None:
-        self.env = gym.make("Taxi-v3")
+        self.__name__ = gym_env_name
+        self.env = gym.make(self.__name__)
         self.S = self.env.observation_space.n
         self.A = self.env.action_space.n
         self.P = np.zeros((self.A, self.S, self.S))
@@ -60,6 +61,10 @@ class MdpGym:
                 liste = self.env.P[s][a]
                 for tup in liste:
                     self.R[s,a] = self.R[s,a] + tup[2]
+
+        self.gamma = 0.999
+        self.epsi = 1e-2
+        
 
 def compute_policy(P, R, V):
     pass

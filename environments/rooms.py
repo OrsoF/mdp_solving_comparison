@@ -105,4 +105,6 @@ class Mdp:
         
         self.R = self.R[:, :, 0]
         self.R = self.R.transpose()
-
+        self.gamma = 0.999
+        self.epsi = 1e-2
+        self.__name__ = 'Rooms'+'_'+str(n)

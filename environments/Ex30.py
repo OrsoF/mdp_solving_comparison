@@ -13,3 +13,6 @@ class Mdp:
         self.R = self.R.astype(np.float64)
         self.S = 4
         self.A = 3
+        self.gamma = 0.999
+        self.epsi = 1e-2
+        self.__name__ = 'Ex30'

@@ -22,9 +22,10 @@ class GurobiSolverPL:
     def __init__(self, env) -> None:
         self.env = env
         self.model = Model("MDP")
-        # self.model.setParam('OutputFlag', 0)
-        # self.model.setParam(GRB.Param.Threads, 1)
-        # self.model.setParam('LogToConsole', 0)
+        self.model.setParam('OutputFlag', 0)
+        self.model.setParam(GRB.Param.Threads, 1)
+        self.model.setParam('LogToConsole', 0)
+        self.__name__ = 'GurobiSolverPL'
     
     def build(self):
         start_time = thread_time()
@@ -54,9 +55,10 @@ class GurobiSolverPLDual:
     def __init__(self, env) -> None:
         self.env = env
         self.model = Model("MDP")
-        # self.model.setParam('OutputFlag', 0)
-        # self.model.setParam(GRB.Param.Threads, 1)
-        # self.model.setParam('LogToConsole', 0)
+        self.model.setParam('OutputFlag', 0)
+        self.model.setParam(GRB.Param.Threads, 1)
+        self.model.setParam('LogToConsole', 0)
+        self.__name__ = 'GurobiSolverPLDual'
     
     def build(self):
         start_time = thread_time()
